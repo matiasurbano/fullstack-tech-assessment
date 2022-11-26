@@ -13,6 +13,36 @@ async function getProjects(includeTasks: boolean = false) {
     })
 }
 
+const TAKE = 3;
+const SKIP = 1;
+let CURSOR_ID: number | undefined = undefined
+
+async function getPaginatedProjects(cursorId: number | undefined) {
+    const queryResults = await prisma.project.findMany({
+        take: TAKE,
+        skip: SKIP,
+        ... (cursorId && {
+            cursor: {
+                id: cursorId,
+            }
+        }),
+        orderBy: {
+            id: 'asc',
+        },
+        include: {
+            tasks: true,
+        },
+    })
+
+    const lastPostInResults = queryResults[TAKE-1] // Remember: zero-based index! :)
+    CURSOR_ID = lastPostInResults.id 
+
+    return queryResults;
+}
+
+
+
+
 
 export default async function handler(
     req: NextApiRequest,
@@ -24,7 +54,7 @@ export default async function handler(
             return;
         }
 
-        const projects = await getProjects(true)
+        const projects = await getPaginatedProjects(CURSOR_ID)
 
         res.status(200).json({
             totalCount: projects.length,
