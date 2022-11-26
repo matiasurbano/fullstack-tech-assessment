@@ -108,6 +108,8 @@ We should make sure this API is as performant as possible, as it will be under h
     - Seeding mechanism 
 1. Updated all api endpoints to use the ORM
     - Refactoring and improving the handlers
-
+1. Added createdAt, updatedAt audit purposes
+1. Added Cursor-based Pagination
+    - note: offset pagination does not scale
 
 
