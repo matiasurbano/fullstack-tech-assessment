@@ -112,5 +112,7 @@ We should make sure this API is as performant as possible, as it will be under h
 1. Added Cursor-based Pagination
     - note: offset pagination does not scale
 1. Added bulk seed with a BULK_SEED_SIZE enviroment variable to set the size of the dataset
-
+1. Adding Generic Paginated Response
+1. Added Debounce Search in ClientSide
+1. Added 500 / 404 Default Pages
 
