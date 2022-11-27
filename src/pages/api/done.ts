@@ -1,5 +1,5 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
-import prisma from '../../lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
 
 //
 // This API route can be called as PUT /api/done
@@ -26,7 +26,7 @@ export default async function handler(
             res.status(405).end();
             return;
         }
-        const {taskId, done} = req.query;
+        const { taskId, done } = req.query;
 
         await setTaskDone(Number(taskId as string), done === 'true');
 

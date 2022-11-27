@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 import styles from "./TaskBoard.module.css";
 
 interface TaskProps {

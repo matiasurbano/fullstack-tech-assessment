@@ -1,7 +1,6 @@
 Welcome to Serenade's TODO app, version 1!
 `by Matias Urbano`
 
-
 # Introduction
 
 This small, 2-page app helps us track our pending TO-DOs across projects.
@@ -18,6 +17,40 @@ The backend has 3 API endpoints:
 
 These are implemented as Next.JS API routes - you can find them under src/pages/api
 
+## Environment Variables
+
+Make sure the environment variables are in place copying them from the sample and then within `.env` file a define POSTGRES_USER and POSTGRES_PASSWORD of choice. 
+
+ ```
+ cp .env.sample .env
+ ```
+
+## Database Setup
+
+Postgres up and running. This will use port 5432 in your machine, so make sure it's free.
+
+### Without Docker
+You can spin up your own Postgres instance and update the connection `DATABASE_URL` environemnt variable
+
+### With Docker
+
+The above database setting will be used to spin up a Postgres instance using docker.
+
+```shell
+docker-compose down && docker-compose up
+```
+
+## Create Database, Migrations and Seeding
+
+To recreate the database and apply all the db migrations and initial seeding.
+
+```
+npx prisma migrate reset -f 
+```
+
+### Seeding
+The seeding mechanism will be creating Projects and tasks base on the BULK_SEED_SIZE defined in the environemnt variables files, this will be useful later for to test it against a heavy load. The content for the Projects and Tasks are going to be randomly generated.
+
 # How to run it
 
 ```shell
@@ -28,30 +61,6 @@ npm run dev
 This installs all dependencies and starts serving the app in http://localhost:3000
 
 We use PostgreSQL as our data store, so before the app is accessible we also need to spin it up: 
-
-## With Docker
-
-If you use Docker, you can run 
-```shell
-docker-compose up
-```
-to get Postgres up and running. This will use port 5432 in your machine, so make sure it's free.
-
-Initial schema and test data will be created automatically.
-
-## Without Docker
-You can spin up your own Postgres instance and update the connection settings in src/database/database.ts
-
-Next, execute the SQL in the database/init.sql file to get the schema and initial data loaded.
-
-## If you make changes to the init.sql file
-
-Note the schema init script only runs when you first kick off the database.
-If you make changes to it, run
-```shell
-docker-compose down && docker-compose up
-```
-to recreate the database with the new schema. 
 
 
 # Exercises

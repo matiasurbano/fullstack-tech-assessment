@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 import styles from './TaskBoard.module.css';
-import Task from "./Task";
 import TaskList from "./TaskList";
-import { useDebounce } from 'usehooks-ts'
 
 
 const TaskBoard = () => {

@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
 
 //
 // This API route can be called as GET /api/tasks
@@ -11,8 +11,8 @@ async function getTasks(filter: string | string[] | undefined) {
     const filterCondition = filter ? {
         where: {
             title: {
-                contains: Array.isArray(filter) ? filter[0] : filter 
-            }
+                contains: Array.isArray(filter) ? filter[0] : filter
+            },
         }
     } : undefined
     return await prisma.task.findMany(filterCondition)

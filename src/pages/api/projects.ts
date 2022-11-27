@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma';
 
 //
 // This API route can be called as GET /api/projects
@@ -28,16 +28,16 @@ async function getPaginatedProjects(cursorId: number | undefined) {
             }
         }),
         orderBy: {
-            id: 'asc',
+            name: 'asc',
         },
         include: {
             tasks: true,
         },
     })
 
-    const lastPostInResults = queryResults[TAKE-1] // Remember: zero-based index! :)
+    const lastPostInResults = queryResults[TAKE - 1] // Remember: zero-based index! :)
     PAGE_NUMBER++;
-    CURSOR_ID = lastPostInResults.id 
+    CURSOR_ID = lastPostInResults.id
 
     return queryResults;
 }
