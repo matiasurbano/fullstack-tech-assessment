@@ -32,7 +32,10 @@ export default async function handler(
 
         res.status(200).json({
             items: tasks,
-            totalCount: tasks.length,
+            pageInfo: {
+                size:  tasks.length,
+                totalCount: tasks.length,
+            }
         });
     } catch (e) {
         console.error(e);

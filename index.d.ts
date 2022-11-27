@@ -10,7 +10,14 @@ interface Project {
     tasks: Task[],
 }
 
+
+
+interface PageInfo {
+    size: number;
+    totalCount: number;
+    nextCursor?: string,
+}
 interface PaginatedResponse<T> {
+    pageInfo: PageInfo,
     items: T[],
-    totalCount: number,
 }

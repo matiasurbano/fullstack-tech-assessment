@@ -13,12 +13,12 @@ async function getProjects(includeTasks: boolean = false) {
     })
 }
 
-const TAKE = 3;
+const TAKE = 10;
 const SKIP = 1;
-let CURSOR_ID: number | undefined = undefined
-let PAGE_NUMBER = 1;
 
-async function getPaginatedProjects(cursorId: number | undefined) {
+let nextCursorId: number | undefined = undefined
+
+async function getPaginatedProjects(cursorId: number | undefined) : Promise<PaginatedResponse<Project>> {
     const queryResults = await prisma.project.findMany({
         take: TAKE,
         skip: SKIP,
@@ -35,15 +35,18 @@ async function getPaginatedProjects(cursorId: number | undefined) {
         },
     })
 
-    const lastPostInResults = queryResults[TAKE - 1] // Remember: zero-based index! :)
-    PAGE_NUMBER++;
-    CURSOR_ID = lastPostInResults.id
+    const lastProjectInResults = queryResults[TAKE - 1]
+    nextCursorId = lastProjectInResults ? lastProjectInResults.id : undefined
 
-    return queryResults;
+    return {
+        pageInfo: {
+            size: TAKE,
+            totalCount: queryResults.length,
+            nextCursor: nextCursorId ? Buffer.from(String(nextCursorId)).toString('base64') : ''
+        },
+        items: queryResults,
+    };
 }
-
-
-
 
 
 export default async function handler(
@@ -55,13 +58,15 @@ export default async function handler(
             res.status(405).end();
             return;
         }
-        const projects = await getPaginatedProjects(CURSOR_ID)
+        let nextCursorId: number | undefined;
+        const nextCursor = req.query.nextCursor
+        if (nextCursor) {
+            const decryptedCursor = Buffer.from(String(nextCursor), 'base64').toString('ascii')
+            nextCursorId = Number(decryptedCursor);
+        }
 
-        console.log(`PAGE: ${PAGE_NUMBER}`)
-        res.status(200).json({
-            totalCount: projects.length,
-            items: projects,
-        });
+        const paginatedResponse = await getPaginatedProjects(nextCursorId)
+        res.status(200).json(paginatedResponse);
     } catch (e) {
         console.error(e);
         res.status(500);
