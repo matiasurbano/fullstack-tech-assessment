@@ -10,12 +10,7 @@ interface Project {
     tasks: Task[],
 }
 
-interface TasksResponse {
-    items: Task[],
-    totalCount: number,
-}
-
-interface ProjectsResponse {
-    items: Project[],
+interface PaginatedResponse<T> {
+    items: T[],
     totalCount: number,
 }

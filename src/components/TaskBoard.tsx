@@ -1,19 +1,22 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './TaskBoard.module.css';
 import Task from "./Task";
 import TaskList from "./TaskList";
+import { useDebounce } from 'usehooks-ts'
+
 
 const TaskBoard = () => {
-    const [response, setResponse] = useState<TasksResponse | null>(null);
+    const [response, setResponse] = useState<PaginatedResponse<Task> | null>(null);
     const [error, setError] = useState<any>(null);
     const [filter, setFilter] = useState('');
+    const debouncedFilter = useDebounce<string>(filter, 300)
 
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
         let aborted = false;
 
-        fetch(`/api/tasks?filter=${encodeURIComponent(filter)}`, {signal})
+        fetch(`/api/tasks?filter=${encodeURIComponent(debouncedFilter)}`, { signal })
             .then(r => r.json())
             .then(r => {
                 if (!aborted)
@@ -28,16 +31,16 @@ const TaskBoard = () => {
             controller.abort()
             aborted = true
         }
-    }, [filter]);
+    }, [debouncedFilter]);
 
     return (
         <div>
             {error && (<div>Error: {error.message}</div>)}
             <div>
                 <input type="text" placeholder="Filter" value={filter} className={styles.filter}
-                       onChange={e => setFilter(e.target.value)}/>
+                    onChange={e => setFilter(e.target.value)} />
             </div>
-            {response && <TaskList tasks={response?.items}/>}
+            {response && <TaskList tasks={response?.items} />}
         </div>
     )
 }

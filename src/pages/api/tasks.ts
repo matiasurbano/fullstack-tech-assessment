@@ -20,7 +20,7 @@ async function getTasks(filter: string | string[] | undefined) {
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<TasksResponse>
+    res: NextApiResponse<PaginatedResponse<Task>>
 ) {
     try {
         if (req.method !== 'GET') {

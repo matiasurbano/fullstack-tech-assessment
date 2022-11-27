@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import TaskList from "./TaskList";
 
 const ProjectBoard = () => {
-    const [response, setResponse] = useState<ProjectsResponse | null>(null);
+    const [response, setResponse] = useState<PaginatedResponse<Project> | null>(null);
 
     useEffect(() => {
         fetch(`/api/projects`)
