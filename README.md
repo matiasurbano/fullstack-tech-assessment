@@ -1,8 +1,17 @@
-Fullstack Tech Assessment `by Matias Urbano`
+# Project Tracking App
+
+Author: `Matias Urbano`
+
+# Tech Stack
+- Typescript
+- React
+- Nextjs
+- Prisma ORM (seeding & migrations)
+- Docker
 
 # Introduction
 
-This small, 2-page app helps us track our pending TO-DOs across projects.
+This small, 2-page app helps us track our pending tasks across projects.
 
 The app has two pages, the [task board](http://localhost:3000/) and the [project board](http://localhost:3000/projects). 
 Both pages use asynchronous calls to fetch data from the backend.
@@ -12,7 +21,6 @@ The backend has 3 API endpoints:
 - /api/projects
 - /api/done
 
-These are implemented as Next.JS API routes - you can find them under src/pages/api
 
 ## Environment Variables
 
@@ -90,5 +98,3 @@ The Projects endpoint have a cursor-based pagination, Also indexes has been adde
 1. Added 500 / 404 Default Pages
 1. Improved pagination and add UI to Fetch next
 1. Performance Improvements
-
-
